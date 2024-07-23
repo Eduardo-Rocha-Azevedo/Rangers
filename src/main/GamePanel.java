@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
     // Game Settings
     Thread gameThread;
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
 
     // Set player's defult position
     int playerX = 100;
@@ -29,9 +29,8 @@ public class GamePanel extends JPanel implements Runnable {
     int playerSpeed = 4;
 
     public GamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setFocusable(true);
-        this.setBackground(Color.black);
+    	this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setBackground(new Color(0,0,0));
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
