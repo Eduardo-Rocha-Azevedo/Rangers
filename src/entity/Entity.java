@@ -16,5 +16,12 @@ public class Entity {
 	public Rectangle solidArea;
 	public int solidAreaDefultX, solidAreaDefultY;
 	public boolean collisioOn = false;
+
+	 // Variáveis para o pulo
+	 public boolean jumping = false;
+	 public double velocityY = 0;
+	 public double gravity = 0.5;
+	 public double jumpPower = 10;
+	 public int groundY; // Define a posição Y do solo
 	  
 }

@@ -13,7 +13,7 @@ public class AssetSetter {
     }
 
     public void setObject(){
-        //KEYS ===================================
+      /*   //KEYS ===================================
         gp.obj[0] = new OBJ_Key(gp);
         gp.obj[0].worldX = 23 * gp.tileSize;
         gp.obj[0].worldY = 7 * gp.tileSize;
@@ -47,6 +47,6 @@ public class AssetSetter {
         //BOOTS SPECIAL ============================
         gp.obj[7] = new OBJ_Boots(gp);
         gp.obj[7].worldX = 37 * gp.tileSize;
-        gp.obj[7].worldY = 42 * gp.tileSize;
+        gp.obj[7].worldY = 42 * gp.tileSize;*/
     }
 }
