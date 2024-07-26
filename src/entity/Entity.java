@@ -12,7 +12,7 @@ public class Entity {
 
 	public int spriteCouter = 0;
 	public int spriteNum = 1;
-
+	
 	public Rectangle solidArea;
 	public int solidAreaDefultX, solidAreaDefultY;
 	public boolean collisioOn = false;
@@ -23,5 +23,8 @@ public class Entity {
 	 public double gravity = 0.5;
 	 public double jumpPower = 10;
 	 public int groundY; // Define a posição Y do solo
-	  
+    public boolean collisiOn;
+	
+
+	    
 }
