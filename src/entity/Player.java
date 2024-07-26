@@ -12,6 +12,11 @@ import principal.UtiliyTool;
 public class Player extends Entity {
 	GamePanel gp;
 	KeyHandler keyH;
+	private boolean jumping;
+    private double jumpSpeed;
+	private double fallingSpeed = 0;
+	private boolean onGround = false;
+	private double jumpStrength = 10;
 	int spriteCounter = 0;
 	public final int screenX;
 	public final int screenY;
@@ -71,53 +76,70 @@ public class Player extends Entity {
 	}
 
 	public void update() {
-		// Lógica de pulo
-		if (keyH.jump && !jumping) {
-			jumping = true;
-			velocityY = -jumpPower;
-		}
-
-		// Aplicar gravidade
-		if (jumping || !isOnGround()) {
-			worldY += velocityY;
-			velocityY += gravity;
-
-			// Verificar se o jogador atingiu o chão
-			if (worldY >= groundY) {
-				worldY = groundY;
-				jumping = false;
-				velocityY = 0;
-			}
-		}
-
 		// Movimentação horizontal
 		if (keyH.left || keyH.right) {
 			if (keyH.left) {
 				direction = "left";
+				worldX -= speed; // Movimento à esquerda
 			} else if (keyH.right) {
 				direction = "right";
+				worldX += speed; // Movimento à direita
 			}
-
+	
 			// Verificar colisões horizontais
-			collisioOn = false;
+			collisiOn = false;
 			gp.cChecker.checkTile(this);
-
-			if (!collisioOn) {
-				switch (direction) {
-					case "left":
-						worldX -= speed;
-						break;
-					case "right":
-						worldX += speed;
-						break;
+	
+			if (collisiOn) {
+				if (direction.equals("left")) {
+					worldX += speed; // Corrige a posição
+					System.out.println("Collision on left. Adjusted X to: " + worldX);
+				} else if (direction.equals("right")) {
+					worldX -= speed; // Corrige a posição
+					System.out.println("Collision on right. Adjusted X to: " + worldX);
 				}
 			}
-
 			// Atualizar o sprite
 			updateSprite();
 		}
+	
+		// Lógica de pulo e gravidade
+		if (jumping) {
+			fallingSpeed += gravity;
+			worldY += fallingSpeed;
+	
+			// Verificar se o jogador atingiu o chão
+			int tileY = (worldY + gp.tileSize) / gp.tileSize;
+			int tileX = worldX / gp.tileSize;
+			int tileNum = gp.tileM.mapTileNum[tileX][tileY];
+	
+			if (gp.tileM.tile[tileNum].collision) {
+				worldY = tileY * gp.tileSize - gp.tileSize;
+				jumping = false;
+				fallingSpeed = 0;
+				System.out.println("Collision with ground. Adjusted Y to: " + worldY);
+			}
+		} else {
+			// Verificar se o jogador está no ar
+			int tileX = worldX / gp.tileSize;
+			int tileY = (worldY + gp.tileSize) / gp.tileSize;
+			int tileNum = gp.tileM.mapTileNum[tileX][tileY];
+	
+			if (!gp.tileM.tile[tileNum].collision) {
+				jumping = true;
+				fallingSpeed += gravity;
+				System.out.println("In air. FallingSpeed: " + fallingSpeed);
+			}
+		}
+	
+		// Lógica de pulo
+		if (keyH.jump && !jumping) {
+			jumping = true;
+			fallingSpeed = -jumpStrength;
+			System.out.println("Jumping. FallingSpeed: " + fallingSpeed);
+		}
 	}
-
+	
 	private void updateSprite() {
 		
 		spriteCounter++;
